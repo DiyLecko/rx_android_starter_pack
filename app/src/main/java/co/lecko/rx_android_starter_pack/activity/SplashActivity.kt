@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import co.lecko.rx_android_starter_pack.R
 import co.lecko.rx_android_starter_pack.common.BaseActivity
-import co.lecko.rx_android_starter_pack.common.addTo
-import rx.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import co.lecko.rx_android_starter_pack.common.delay
 
 class SplashActivity : BaseActivity() {
     val INTRO_TIME_MILLIS = 1500L
@@ -15,14 +13,13 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        rx.Observable
-                .just("")
-                .delay(INTRO_TIME_MILLIS, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    launchApp()
-                }
-                .addTo(disposeBag)
+        delay(INTRO_TIME_MILLIS) {
+            launchApp()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     fun launchApp() {

@@ -1,11 +1,13 @@
 package co.lecko.rx_android_starter_pack.common
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import co.lecko.rx_android_starter_pack.R
+import co.lecko.rx_android_starter_pack.util.PermissionUtils
 import java.util.*
 
 open class BaseActivity : AppCompatActivity() {
@@ -26,6 +28,29 @@ open class BaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!popFragment()) {
             super.onBackPressed()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PermissionUtils.ActivityRequestCode.RequestPermission.code -> {
+                val reqPermList = ArrayList<PermissionUtils.DevicePermission>()
+                permissions.forEachIndexed { index, _ ->
+                    val perm = PermissionUtils.DevicePermission.from(permissions[index])
+                    when (grantResults[index]) {
+                        PackageManager.PERMISSION_DENIED -> {
+                            PermissionUtils.get().setDevicePermissionState(perm, PermissionUtils.DevicePermissionState.Denied)
+                            reqPermList.add(perm)
+                        }
+                        PackageManager.PERMISSION_GRANTED -> PermissionUtils.get().setDevicePermissionState(perm, PermissionUtils.DevicePermissionState.Granted)
+                    }
+                }
+
+                if (reqPermList.size > 0) {
+                    PermissionUtils.get().requestPermission(this, reqPermList.toTypedArray())
+                }
+            }
         }
     }
 
