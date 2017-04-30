@@ -20,6 +20,7 @@ abstract class RxRecyclerFragment(open val alwaysScroll: Boolean = false) : Base
     open fun binding(inflater: LayoutInflater?, container: ViewGroup?): ViewDataBinding {
         return FragmentDefaultBinding.inflate(inflater, container, false)
     }
+
     open fun adapter(): RxRecyclerViewBinder {
         return RxRecyclerViewBinder.createLinearLayout(recycler_view, disposeBag)
     }

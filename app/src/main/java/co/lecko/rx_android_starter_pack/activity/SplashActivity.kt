@@ -9,7 +9,7 @@ import rx.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
 class SplashActivity : BaseActivity() {
-    val INTRO_TIME_MILLIS = 1000L
+    val INTRO_TIME_MILLIS = 1500L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
