@@ -1,0 +1,91 @@
+buildscript {
+    ext.kotlin_version = '1.1.2'
+    ext.android_support_version = '25.3.1'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.databinding:dataBinder:1.0-rc1'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
+}
+
+kapt {
+    generateStubs = true
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "co.lecko.rx_android_starter_pack"
+        minSdkVersion 17
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "5g"
+        jumboMode true
+        dexInProcess true
+        maxProcessCount 1
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "com.android.support:appcompat-v7:$android_support_version"
+    compile "com.android.support:recyclerview-v7:$android_support_version"
+    compile "com.android.support:support-v4:$android_support_version"
+    compile "com.android.support:percent:$android_support_version"
+    compile "com.android.support:support-vector-drawable:$android_support_version"
+    compile "com.android.support:design:$android_support_version"
+    compile "com.android.support:support-core-utils:$android_support_version"
+    compile "com.android.support.constraint:constraint-layout:1.0.2"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'io.reactivex.rxjava2:rxkotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17-kotlin:2.0.0'
+    compile 'com.minimize.android:rxrecycler-adapter:1.2.2'
+    kapt "com.android.databinding:compiler:$gradle_plugin_version"
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    testCompile 'junit:junit:4.12'
+}
